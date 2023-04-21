@@ -1,29 +1,73 @@
 import { Box } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { Link } from "react-router-dom";
+
+
+interface MenuProps {
+    title: string,
+    url: string,
+    is_selected: boolean,
+}
+
+function Menu(props: MenuProps) {
+    return (
+        <Box
+            margin={"auto"}
+            sx={{
+                border: "1px dashed grey",
+                margin: "20px auto"
+            }}>
+            <Link to={props.url}>
+                <Typography variant="h6" noWrap sx={{
+                }}>
+                    {props.title}
+                </Typography>
+            </Link>
+        </Box>
+    )
+}
 
 function LeftMenus() {
     return (
-        <Box>
+        <Box sx={{
+            height: "100%",
+            width: "100%",
+            border: "1px dashed grey"
+        }}>
             <Stack>
-                <Typography>
-                    <a href={`/home`}>Home</a>
-                </Typography>
-                <Typography>
-                    <a href={`/daily_review`}>Daily Review</a>
-                </Typography>
-                <Typography>
-                    Explore
-                </Typography>
-                <Typography>
-                    Ask AI
-                </Typography>
-                <Typography>
-                    Resources
-                </Typography>
-                <Typography>
-                    Settings
-                </Typography>
+                <Menu
+                    title="Home"
+                    url="/home"
+                    is_selected={false}
+                />
+                <Menu
+                    title="Daily Review"
+                    url="/daily_review"
+                    is_selected={false}
+                />
+                <Menu
+                    title="Explore"
+                    url="/home"
+                    is_selected={false}
+                />
+                <Menu
+                    title="Ask AI"
+                    url="/home"
+                    is_selected={false}
+                />
+
+                <Menu
+                    title="Resources"
+                    url="/home"
+                    is_selected={false}
+                />
+                <Menu
+                    title="Settings"
+                    url="/home"
+                    is_selected={false}
+                />
+
             </Stack>
         </Box>
     )

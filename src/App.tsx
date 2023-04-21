@@ -7,7 +7,11 @@ import LeftMenus from "./pages/left_menus";
 function App() {
 
     return (
-        <Box>
+        <Box sx={{
+            height: "100%",
+            width: "100%",
+        }}
+        >
             <Stack direction={"row"}>
                 <Box sx={{
                     height: '100%',
