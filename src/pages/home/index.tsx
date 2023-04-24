@@ -1,12 +1,13 @@
 import { Container, Typography } from "@mui/material";
+import BlogInput from "../../components/blog_input";
+import BlogList from "../../components/blog_list";
 
 function Home() {
 
     return (
         <Container>
-            <Typography variant="h1">
-                H - O - M - E
-            </Typography>
+            <BlogInput />
+            <BlogList />
         </Container>
     )
 

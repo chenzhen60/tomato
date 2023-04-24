@@ -18,6 +18,8 @@ impl KV {
         let conn = Connection::open(DB_PATH.get().unwrap())?;
         let mut stmt = conn.prepare("insert into kvs (key, value) values (?, ?)")?;
         stmt.execute([&self.key, &self.value])?;
+        drop(stmt);
+        conn.close();
         Ok(())
     }
 
@@ -30,6 +32,8 @@ impl KV {
                )",
         )?;
         stmt.execute([])?;
+        drop(stmt);
+        conn.close();
         Ok(())
     }
 }
