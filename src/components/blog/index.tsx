@@ -6,7 +6,7 @@ function Blog() {
             backgroundColor: 'white',
             padding: "20px 20px",
             borderRadius: '10px',
-            boxShadow: '10px, 10px, 10px, 10px, rgba(0,0,0,0.5)',
+            boxShadow: 2,
             marginBottom: '15px',
         }}>
             <Stack direction={"row"}>
@@ -17,7 +17,9 @@ function Blog() {
             <Box sx={{
                 paddingTop: '10px'
             }}>
-                <Typography variant="h6">
+                <Typography variant="h5" sx={{
+                        fontSize: '16px',
+                    }}>
                     Hello, Welcome to memos.
                 </Typography>
             </Box>

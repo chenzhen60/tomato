@@ -13,13 +13,12 @@ interface MenuProps {
 function Menu(props: MenuProps) {
     return (
         <Box
-            margin={"auto"}
             sx={{
-                border: "1px dashed grey",
-                margin: "20px auto"
+                margin: "10px 0px"
             }}>
             <Link to={props.url}>
-                <Typography variant="h6" noWrap sx={{
+                <Typography variant="h5" noWrap sx={{
+                    fontSize: '18px'
                 }}>
                     {props.title}
                 </Typography>
@@ -33,11 +32,13 @@ function LeftMenus() {
         <Box sx={{
             height: "100%",
             width: "100%",
-            border: "1px dashed grey"
+            marginLeft: '20px',
+            marginRight: '5px',
+            marginTop: '25px'
         }}>
-            <Stack>
+            <Stack direction={"column"} alignItems={"flex-start"} justifyContent={"center"}>
                 <Menu
-                    title="Home"
+                    title="Homee"
                     url="/home"
                     is_selected={false}
                 />

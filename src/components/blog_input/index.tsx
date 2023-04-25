@@ -6,8 +6,8 @@ export default function BlogInput() {
             backgroundColor: 'white',
             padding: "20px 20px",
             borderRadius: '10px',
-            boxShadow: '10px, 10px, 10px, 10px, rgba(0,0,0,0.5)',
             margin: '10px 0px',
+            boxShadow: 2,
         }}>
             <TextField
                 variant="standard"
