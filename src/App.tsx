@@ -15,7 +15,7 @@ function App() {
             <Stack direction={"row"}>
                 <Box sx={{
                     height: '100%',
-                    width: '20%'
+                    width: '200px',
                 }}>
                     <LeftMenus />
                 </Box>
