@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { RecoilRoot } from "recoil";
 import App from "./App";
 import DailyReview from "./pages/daily_review";
 import ErrorPage from "./pages/error_page";
 import Home from "./pages/home";
 import "./styles.css";
-
 
 const router = createBrowserRouter([
     {
@@ -16,23 +16,24 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Home />
+                element: <Home />,
             },
             {
                 path: "home",
-                element: <Home />
+                element: <Home />,
             },
             {
                 path: "daily_review",
-                element: <DailyReview />
-            }
-        ]
+                element: <DailyReview />,
+            },
+        ],
     },
-
-])
+]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        <RecoilRoot>
+            <RouterProvider router={router} />
+        </RecoilRoot>
     </React.StrictMode>
 );

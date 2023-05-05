@@ -1,6 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material";
+import {Blog as BlogType} from "../../types";
 
-function Blog() {
+function Blog(props: {blog: BlogType}) {
     return (
         <Box sx={{
             backgroundColor: 'white',
@@ -11,7 +12,7 @@ function Blog() {
         }}>
             <Stack direction={"row"}>
                 <Typography variant="body2" color={'grey'}>
-                    2023/4/24 20:32
+                    {new Date(props.blog.created_at * 1000).toLocaleString()}
                 </Typography>
             </Stack>
             <Box sx={{
@@ -20,7 +21,7 @@ function Blog() {
                 <Typography variant="h5" sx={{
                         fontSize: '16px',
                     }}>
-                    Hello, Welcome to memos.
+                    {props.blog.content}
                 </Typography>
             </Box>
         </Box>
