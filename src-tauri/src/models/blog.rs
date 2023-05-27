@@ -1,7 +1,7 @@
-use rusqlite::{Connection, Result};
+use rusqlite::Result;
 use serde::{Deserialize, Serialize};
 
-use crate::DB_PATH;
+use crate::utils::db_util::DBUtil;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Blog {
@@ -12,7 +12,8 @@ pub struct Blog {
 
 impl Blog {
     pub fn init_db() -> Result<()> {
-        let conn = Connection::open(DB_PATH.get().unwrap())?;
+        let pool = DBUtil::get_pool().unwrap();
+        let conn = pool.get().unwrap();
         conn.execute(
             "
                 create table if not exists blogs (
@@ -25,32 +26,39 @@ impl Blog {
         Ok(())
     }
 
-
     pub fn save(&self) -> Result<()> {
-        let conn = Connection::open(DB_PATH.get().unwrap())?;
-        let mut stmt = conn.prepare("
+        let pool = DBUtil::get_pool().unwrap();
+        let conn = pool.get().unwrap();
+        let mut stmt = conn.prepare(
+            "
             insert into blogs (id, content, created_at)
             values (?, ?, ?)
-        ")?;
+        ",
+        )?;
         stmt.execute([&self.id, &self.content, &self.created_at.to_string()])?;
         Ok(())
     }
 
     pub fn del(&self) -> Result<()> {
-        let conn = Connection::open(DB_PATH.get().unwrap())?;
-        let mut stmt = conn.prepare("
+        let pool = DBUtil::get_pool().unwrap();
+        let conn = pool.get().unwrap();
+        let mut stmt = conn.prepare(
+            "
             delete from blogs where id = ?
-        ")?;
+        ",
+        )?;
         stmt.execute([&self.id])?;
         Ok(())
     }
 
-
     pub fn list_all() -> Result<Vec<Blog>> {
-        let conn = Connection::open(DB_PATH.get().unwrap())?;
-        let mut stmt = conn.prepare("
+        let pool = DBUtil::get_pool().unwrap();
+        let conn = pool.get().unwrap();
+        let mut stmt = conn.prepare(
+            "
             select id, content, created_at from blogs order by created_at desc
-        ")?;
+        ",
+        )?;
 
         let rows = stmt.query_map([], |row| {
             Ok(Self {
@@ -59,7 +67,7 @@ impl Blog {
                 created_at: row.get(2)?,
             })
         })?;
-        
+
         let mut list = Vec::new();
         for row in rows {
             list.push(row?);

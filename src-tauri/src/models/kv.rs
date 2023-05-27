@@ -1,7 +1,7 @@
-use rusqlite::{Connection, Result, Statement};
+use rusqlite::{Result, Statement};
 use serde::{Deserialize, Serialize};
 
-use crate::DB_PATH;
+use crate::utils::db_util::DBUtil;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct KV {
@@ -15,16 +15,16 @@ impl KV {
     }
 
     pub fn insert(&self) -> Result<()> {
-        let conn = Connection::open(DB_PATH.get().unwrap())?;
+        let pool = DBUtil::get_pool().unwrap();
+        let conn = pool.get().unwrap();
         let mut stmt = conn.prepare("insert into kvs (key, value) values (?, ?)")?;
         stmt.execute([&self.key, &self.value])?;
-        drop(stmt);
-        conn.close();
         Ok(())
     }
 
     pub fn create_tables() -> Result<()> {
-        let conn = Connection::open(DB_PATH.get().unwrap())?;
+        let pool = DBUtil::get_pool().unwrap();
+        let conn = pool.get().unwrap();
         let mut stmt: Statement = conn.prepare(
             "CREATE TABLE IF NOT EXISTS kvs (
                key TEXT PRIMARY KEY,
@@ -32,8 +32,6 @@ impl KV {
                )",
         )?;
         stmt.execute([])?;
-        drop(stmt);
-        conn.close();
         Ok(())
     }
 }

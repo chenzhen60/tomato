@@ -30,7 +30,7 @@ function Menu(props: MenuProps) {
           alignItems={"center"}
           justifyContent={"center"}
         >
-          <Typography variant="h6" sx={{ fontSize: '18px'}}>
+          <Typography variant="h6" sx={{ fontSize: '18px' }}>
             <MenuIcon title={props.title} />
           </Typography>
           <Typography

@@ -1,24 +1,37 @@
+use anyhow::Ok;
+use r2d2_sqlite::SqliteConnectionManager;
 use std::env;
 use tauri::App;
 
-use crate::{models::{kv::KV, tag::Tag, blog::Blog}, DB_PATH};
+use crate::{
+    models::{blog::Blog, kv::KV, tag::Tag},
+    DB_POOL,
+};
 
 pub struct DBUtil {}
 
 impl DBUtil {
-    pub fn init_db_path(app: &App) -> anyhow::Result<()> {
+    pub fn init_db_pool(app: &App) -> anyhow::Result<()> {
         let env = env::var("TAURI_ENV").unwrap();
-        println!("{}", env);
-        if env == "development" {
-            DB_PATH.set("../db.sqlite".to_string()).unwrap();
-        } else {
-            let dir_path = app.path_resolver().app_data_dir().unwrap();
-            let bingding = dir_path.join("db.sqlite");
-            let db_path = bingding.to_str().unwrap();
-            DB_PATH.set(db_path.to_string()).unwrap();
-        }
+        let db_path: String = match &env[..] {
+            "development" => "../db.sqlite".to_string(),
+            _ => {
+                let dir_path = app.path_resolver().app_data_dir().unwrap();
+                let bingding = dir_path.join("db.sqlite");
+                let db_path = bingding.to_str().unwrap();
+                db_path.to_string()
+            }
+        };
+        let manager = SqliteConnectionManager::file(db_path);
+        let pool = r2d2::Pool::new(manager).unwrap();
+        DB_POOL.set(pool).unwrap();
 
         Ok(())
+    }
+
+    pub fn get_pool() -> anyhow::Result<r2d2::Pool<SqliteConnectionManager>> {
+        let pool = DB_POOL.get().unwrap();
+        Ok(pool.clone())
     }
 
     pub fn init_db_table() -> anyhow::Result<()> {

@@ -4,12 +4,12 @@ import BlogList from "../../components/blog_list";
 
 function Home() {
 
-    return (
-        <Container>
-            <BlogInput />
-            <BlogList />
-        </Container>
-    )
+  return (
+    <div>
+      <BlogInput />
+      <BlogList />
+    </div>
+  )
 
 }
 
