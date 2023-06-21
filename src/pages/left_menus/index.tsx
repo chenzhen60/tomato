@@ -10,6 +10,7 @@ import {
 } from "react-icons/ai";
 import { HiOutlineHashtag } from "react-icons/hi";
 import { CiSettings } from "react-icons/ci";
+import { BiGame } from "react-icons/bi";
 
 interface MenuProps {
   title: string;
@@ -67,6 +68,8 @@ function MenuIcon(props: MenuIconProps) {
       return <AiOutlinePaperClip />;
     case "Settings":
       return <CiSettings />;
+    case "Tomatos":
+      return <BiGame />;
 
     default:
       return <div />;
@@ -90,7 +93,7 @@ function LeftMenus() {
         justifyContent={"center"}
       >
         <Menu title="Home" url="/home" is_selected={false} />
-        <Menu title="Daily Review" url="/daily_review" is_selected={false} />
+        <Menu title="Tomatos" url="/tomatos" is_selected={false} />
         <Menu title="Explore" url="/home" is_selected={false} />
         <Menu title="Ask AI" url="/home" is_selected={false} />
         <Menu title="Resources" url="/home" is_selected={false} />

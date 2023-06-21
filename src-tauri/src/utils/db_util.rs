@@ -4,7 +4,7 @@ use std::env;
 use tauri::App;
 
 use crate::{
-    models::{blog::Blog, kv::KV, tag::Tag},
+    models::{blog::Blog, kv::KV, tag::Tag, clipboard::Clipboard},
     DB_POOL,
 };
 
@@ -34,10 +34,16 @@ impl DBUtil {
         Ok(pool.clone())
     }
 
+    pub fn get_conn() -> anyhow::Result<r2d2::PooledConnection<SqliteConnectionManager>> {
+        let pool = Self::get_pool().unwrap();
+        Ok(pool.get()?)
+    }
+
     pub fn init_db_table() -> anyhow::Result<()> {
         KV::create_tables()?;
         Tag::init_db()?;
         Blog::init_db()?;
+        Clipboard::init_db()?;
 
         Ok(())
     }

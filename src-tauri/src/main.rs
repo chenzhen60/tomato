@@ -1,12 +1,12 @@
-use std::{
-    collections::HashMap,
-    time::{SystemTime, UNIX_EPOCH},
-};
+use std::collections::HashMap;
 
 use dotenv::dotenv;
 use models::blog::Blog;
 use once_cell::sync::OnceCell;
 use r2d2_sqlite::SqliteConnectionManager;
+use tauri::Manager;
+use tauri_plugin_clipboard::ManagerExt;
+use utils::time_util::TimeUitl;
 use uuid::Uuid;
 
 use crate::utils::db_util::DBUtil;
@@ -34,14 +34,10 @@ fn blogs() -> Vec<Blog> {
 
 #[tauri::command]
 fn save_blog(params: HashMap<String, String>) -> bool {
-    let now_seconds = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .unwrap()
-        .as_secs();
     let blog = Blog {
         id: Uuid::new_v4().to_string(),
         content: params.get("content").unwrap().to_string(),
-        created_at: now_seconds as i64,
+        created_at: TimeUitl::now_timestamp(),
     };
 
     blog.save().unwrap();
@@ -52,9 +48,20 @@ fn save_blog(params: HashMap<String, String>) -> bool {
 fn main() {
     dotenv().ok();
     tauri::Builder::default()
+        .plugin(tauri_plugin_clipboard::init())
         .setup(|app| {
             DBUtil::init_db_pool(app).unwrap();
             DBUtil::init_db_table().unwrap();
+            println!("=====================");
+            let app_handle = app.app_handle();
+            match app_handle.clipboard().read_text() {
+                Ok(result) => {
+                    println!("content: {}", result);
+                },
+                Err(e) => {
+                    println!("err is: {}", e)
+                }
+            };
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![greet, blogs, save_blog])

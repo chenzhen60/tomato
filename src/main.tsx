@@ -6,34 +6,39 @@ import App from "./App";
 import DailyReview from "./pages/daily_review";
 import ErrorPage from "./pages/error_page";
 import Home from "./pages/home";
+import TomatoList from "./pages/tomato/indext";
 import "./styles.css";
 
 const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <App />,
-        errorElement: <ErrorPage />,
-        children: [
-            {
-                index: true,
-                element: <Home />,
-            },
-            {
-                path: "home",
-                element: <Home />,
-            },
-            {
-                path: "daily_review",
-                element: <DailyReview />,
-            },
-        ],
-    },
+  {
+    path: "/",
+    element: <App />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: "home",
+        element: <Home />,
+      },
+      {
+        path: "tomatos",
+        element: <TomatoList />,
+      },
+      {
+        path: "daily_review",
+        element: <DailyReview />,
+      },
+    ],
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <React.StrictMode>
-        <RecoilRoot>
-            <RouterProvider router={router} />
-        </RecoilRoot>
-    </React.StrictMode>
+  <React.StrictMode>
+    <RecoilRoot>
+      <RouterProvider router={router} />
+    </RecoilRoot>
+  </React.StrictMode>
 );
