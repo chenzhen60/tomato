@@ -1,11 +1,9 @@
 use std::collections::HashMap;
 
 use dotenv::dotenv;
-use models::blog::Blog;
+use models::{blog::Blog, clipboard::Clipboard};
 use once_cell::sync::OnceCell;
 use r2d2_sqlite::SqliteConnectionManager;
-use tauri::Manager;
-use tauri_plugin_clipboard::ManagerExt;
 use utils::time_util::TimeUitl;
 use uuid::Uuid;
 
@@ -40,9 +38,19 @@ fn save_blog(params: HashMap<String, String>) -> bool {
         created_at: TimeUitl::now_timestamp(),
     };
 
-    blog.save().unwrap();
+    match blog.save() {
+        Ok(()) => true,
+        Err(_) => false,
+    }
+}
 
-    true
+#[tauri::command]
+fn save_clipboard(text: &str) -> bool {
+    let clipboard = Clipboard::new(String::from(text));
+    if let Ok(()) = clipboard.save() {
+        return true;        
+    }
+    false
 }
 
 fn main() {
@@ -52,19 +60,9 @@ fn main() {
         .setup(|app| {
             DBUtil::init_db_pool(app).unwrap();
             DBUtil::init_db_table().unwrap();
-            println!("=====================");
-            let app_handle = app.app_handle();
-            match app_handle.clipboard().read_text() {
-                Ok(result) => {
-                    println!("content: {}", result);
-                },
-                Err(e) => {
-                    println!("err is: {}", e)
-                }
-            };
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![greet, blogs, save_blog])
+        .invoke_handler(tauri::generate_handler![greet, blogs, save_blog, save_clipboard])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

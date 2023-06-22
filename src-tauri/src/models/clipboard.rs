@@ -39,6 +39,12 @@ impl Clipboard {
         let conn = DBUtil::get_conn().unwrap();
         let mut stmt = conn.prepare(
             "
+                delete from clipboards where text = ?
+            ",
+        )?;
+        stmt.execute([&self.text])?;
+        let mut stmt = conn.prepare(
+            "
               insert into clipboards (id, text, created_at)
               values(?, ?, ?)
             ",
