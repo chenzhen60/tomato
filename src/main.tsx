@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import App from "./App";
+import ClipboardList from "./pages/clipboard_list";
 import DailyReview from "./pages/daily_review";
 import ErrorPage from "./pages/error_page";
 import Home from "./pages/home";
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "home",
         element: <Home />,
+      },
+      {
+        path: "clipboard",
+        element: <ClipboardList/>,
       },
       {
         path: "tomatos",

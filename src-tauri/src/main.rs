@@ -53,6 +53,17 @@ fn save_clipboard(text: &str) -> bool {
     false
 }
 
+#[tauri::command]
+fn clipboards() -> Vec<Clipboard> {
+    match Clipboard::list_all() {
+        Ok(list) => list,
+        Err(err) => {
+            panic!("#{:?}", err)
+        }
+        
+    }
+}
+
 fn main() {
     dotenv().ok();
     tauri::Builder::default()
@@ -62,7 +73,7 @@ fn main() {
             DBUtil::init_db_table().unwrap();
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![greet, blogs, save_blog, save_clipboard])
+        .invoke_handler(tauri::generate_handler![greet, blogs, save_blog, save_clipboard, clipboards])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

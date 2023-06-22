@@ -93,7 +93,7 @@ function LeftMenus() {
         justifyContent={"center"}
       >
         <Menu title="Home" url="/home" is_selected={false} />
-        <Menu title="Tomatos" url="/tomatos" is_selected={false} />
+        <Menu title="Clipboard" url="/clipboard" is_selected={false} />
         <Menu title="Explore" url="/home" is_selected={false} />
         <Menu title="Ask AI" url="/home" is_selected={false} />
         <Menu title="Resources" url="/home" is_selected={false} />
