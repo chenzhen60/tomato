@@ -52,4 +52,23 @@ impl Clipboard {
         stmt.execute([&self.id, &self.text, &self.created_at.to_string()])?;
         Ok(())
     }
+
+    pub fn list_all() -> Result<Vec<Clipboard>> {
+        let conn = DBUtil::get_conn().unwrap();
+        let mut stmt = conn.prepare(
+            "
+             select id, text, created_at
+             from clipboards
+             order by created_at desc
+            ",
+        )?;
+        let rows = stmt.query_map([], |row| {
+            Ok(Self {
+                id: row.get(0)?,
+                text: row.get(1)?,
+                created_at: row.get(2)?,
+            })
+        })?;
+        Ok(rows.map(|row| row.unwrap()).collect())
+    }
 }
