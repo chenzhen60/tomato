@@ -24,11 +24,21 @@ function ClipboardList() {
 	return <div>
 		{
 			clips.map((item) => {
-				return <p> {item.text} </p>
+				return <ClipBoardShow key={item.id} clip={item} />
 			})
 		}
 	</div>
 }
 
+
+function ClipBoardShow(props: { clip: ClipBoard }) {
+
+	return <div className="w-full flex flex-col m-4 p-2 bg-white rounded-lg">
+		<p className="whitespace-pre line-clamp-5 text-ellipsis">
+			{props.clip.text}
+		</p>
+	</div>
+
+}
 
 export default ClipboardList;

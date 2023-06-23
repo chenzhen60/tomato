@@ -10,6 +10,7 @@ import {
 	listenImage,
 } from "tauri-plugin-clipboard-api";
 import { invoke } from "@tauri-apps/api";
+import { text } from "stream/consumers";
 
 function App() {
 	let tauriTextUnlisten: UnlistenFn;
@@ -20,18 +21,28 @@ function App() {
 	async function startListening() {
 		tauriTextUnlisten = await listen(TEXT_CHANGED, (event) => {
 			const text = (event.payload as any).value;
-			invoke<boolean>("save_clipboard", {text}).then((_) => {
-				console.log("save successful");
-			});
+			save_clipboard(text);
 		});
 		tauriImageUnlisten = await listen(IMAGE_CHANGED, (event) => {
 			const text = (event.payload as any).value;
-			invoke<boolean>("save_clipboard", {text: text}).then((_) => {
-				console.log("save successful");
-			});
+			save_clipboard(text);
 		});
 		imageUnlisten = listenImage();
 		textUnlisten = listenText();
+	}
+
+	function is_whitespace(text: string): boolean {
+		return /^\s*$/.test(text);
+	}
+
+	function save_clipboard(text: string) {
+		if (is_whitespace(text)) {
+			return false;
+		}
+
+		invoke<boolean>("save_clipboard", {text}).then((_) => {
+			console.log("save successful");
+		})
 	}
 
 	function stopListening() {
