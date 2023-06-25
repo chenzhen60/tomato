@@ -1,9 +1,10 @@
 use r2d2_sqlite::SqliteConnectionManager;
-use std::{env, fs::{File, create_dir_all}};
+use std::fs::{create_dir_all, File};
 use tauri::App;
 
 use crate::{
-    models::{blog::Blog, kv::KV, tag::Tag, clipboard::Clipboard},
+    models::{blog::Blog, clipboard::Clipboard, kv::KV, tag::Tag},
+    utils::conf::Conf,
     DB_POOL,
 };
 
@@ -11,8 +12,8 @@ pub struct DBUtil {}
 
 impl DBUtil {
     pub fn init_db_pool(app: &App) -> anyhow::Result<()> {
-        let env = env::var("TAURI_ENV").unwrap();
-        let db_path: String = match &env[..] {
+        let env = Conf::tauri_env();
+        let db_path: String = match env {
             "development" => "../db.sqlite".to_string(),
             _ => {
                 let dir_path = app.path_resolver().app_data_dir().unwrap();

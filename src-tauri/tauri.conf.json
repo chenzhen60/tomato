@@ -17,8 +17,10 @@
 				"all": false,
 				"open": true
 			},
-			"fs" : {
-				"scope": ["*"]
+			"fs": {
+				"scope": [
+					"*"
+				]
 			}
 		},
 		"bundle": {

@@ -40,7 +40,7 @@ function App() {
 			return false;
 		}
 
-		invoke<boolean>("save_clipboard", {text}).then((_) => {
+		invoke<boolean>("save_clipboard", { text }).then((_) => {
 			console.log("save successful");
 		})
 	}

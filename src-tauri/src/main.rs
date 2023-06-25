@@ -1,6 +1,6 @@
-use dotenv::dotenv;
 use once_cell::sync::OnceCell;
 use r2d2_sqlite::SqliteConnectionManager;
+use tauri_plugin_log::LogTarget;
 
 use crate::{
     api::{blogs, clipboards, greet, save_blog, save_clipboard},
@@ -16,8 +16,6 @@ pub mod utils;
 pub static DB_POOL: OnceCell<r2d2::Pool<SqliteConnectionManager>> = OnceCell::new();
 
 fn main() {
-    dotenv().ok();
-    env_logger::init();
     let quit = CustomMenuItem::new("quit".to_string(), "Quit");
     let hide = CustomMenuItem::new("hide".to_string(), "Hide");
     let show = CustomMenuItem::new("show".to_string(), "Show");
@@ -30,6 +28,11 @@ fn main() {
 
     tauri::Builder::default()
         .plugin(tauri_plugin_clipboard::init())
+        .plugin(
+            tauri_plugin_log::Builder::default()
+                .targets([LogTarget::LogDir])
+                .build(),
+        )
         .setup(|app| {
             DBUtil::init_db_pool(app).unwrap();
             DBUtil::init_db_table().unwrap();
