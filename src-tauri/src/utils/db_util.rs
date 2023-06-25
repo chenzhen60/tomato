@@ -1,6 +1,5 @@
-use anyhow::Ok;
 use r2d2_sqlite::SqliteConnectionManager;
-use std::env;
+use std::{env, fs::{File, create_dir_all}};
 use tauri::App;
 
 use crate::{
@@ -19,6 +18,13 @@ impl DBUtil {
                 let dir_path = app.path_resolver().app_data_dir().unwrap();
                 let bingding = dir_path.join("db.sqlite");
                 let db_path = bingding.to_str().unwrap();
+                match File::open(db_path) {
+                    Ok(_) => (),
+                    Err(_) => {
+                        create_dir_all(dir_path)?;
+                        File::create(db_path)?;
+                    }
+                };
                 db_path.to_string()
             }
         };

@@ -1,5 +1,4 @@
 use dotenv::dotenv;
-use log::{info, Level};
 use once_cell::sync::OnceCell;
 use r2d2_sqlite::SqliteConnectionManager;
 
@@ -19,8 +18,6 @@ pub static DB_POOL: OnceCell<r2d2::Pool<SqliteConnectionManager>> = OnceCell::ne
 fn main() {
     dotenv().ok();
     env_logger::init();
-    info!("=============================");
-
     let quit = CustomMenuItem::new("quit".to_string(), "Quit");
     let hide = CustomMenuItem::new("hide".to_string(), "Hide");
     let show = CustomMenuItem::new("show".to_string(), "Show");
@@ -47,18 +44,33 @@ fn main() {
         ])
         .system_tray(system_tray)
         .on_system_tray_event(|app, event| match event {
-            tauri::SystemTrayEvent::MenuItemClick { tray_id, id, .. } => match id.as_str() {
+            tauri::SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
                 "quit" => {
                     std::process::exit(0);
                 }
                 "hide" => {
                     let window = app.get_window("main").unwrap();
+                    #[cfg(not(target_os = "macos"))]
                     window.hide().unwrap();
+                    #[cfg(target_os = "macos")]
+                    tauri::AppHandle::hide(&window.app_handle()).unwrap();
                 }
-                _ => {
-                    {}
+                "show" => {
+                    let window = app.get_window("main").unwrap();
+                    window.show().unwrap();
                 }
+                _ => {}
             },
+            _ => {}
+        })
+        .on_window_event(|event| match event.event() {
+            tauri::WindowEvent::CloseRequested { api, .. } => {
+                #[cfg(not(target_os = "macos"))]
+                event.window().hide().unwrap();
+                #[cfg(target_os = "macos")]
+                tauri::AppHandle::hide(&event.window().app_handle()).unwrap();
+                api.prevent_close();
+            }
             _ => {}
         })
         .run(tauri::generate_context!())
