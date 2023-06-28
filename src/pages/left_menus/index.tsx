@@ -1,6 +1,3 @@
-import { Box } from "@mui/material";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import {
 	AiOutlineCalendar,
@@ -21,33 +18,18 @@ interface MenuProps {
 
 function Menu(props: MenuProps) {
 	return (
-		<Box
-			sx={{
-				margin: "10px 0px",
-			}}
-		>
+		<div className="mx-2 my-0">
 			<Link to={props.url}>
-				<Stack
-					direction="row"
-					alignItems={"center"}
-					justifyContent={"center"}
-				>
-					<Typography variant="h6" sx={{ fontSize: '18px' }}>
-						<MenuIcon title={props.title} />
-					</Typography>
-					<Typography
-						variant="h6"
-						noWrap
-						sx={{
-							fontSize: "18px",
-							marginLeft: '10px',
-						}}
-					>
-						{props.title}
-					</Typography>
-				</Stack>
+				<div className="flex flex-row justify-center">
+					<p>
+						<h6><MenuIcon title={props.title} /> </h6>
+					</p>
+					<p className="ml-3"	>
+						<h6>{props.title}</h6>
+					</p>
+				</div>
 			</Link>
-		</Box>
+		</div>
 	);
 }
 
@@ -81,28 +63,16 @@ function MenuIcon(props: MenuIconProps) {
 
 function LeftMenus() {
 	return (
-		<Box
-			sx={{
-				height: "100%",
-				width: "100%",
-				marginLeft: "20px",
-				marginRight: "5px",
-				marginTop: "25px",
-			}}
-		>
-			<Stack
-				direction={"column"}
-				alignItems={"flex-start"}
-				justifyContent={"center"}
-			>
+		<div>
+			<div className="flex flex-col justify-self-center items-start">
 				<Menu title="Home" url="/home" is_selected={false} />
 				<Menu title="Clipboard" url="/clipboard" is_selected={false} />
 				<Menu title="Explore" url="/home" is_selected={false} />
 				<Menu title="Ask AI" url="/home" is_selected={false} />
 				<Menu title="Resources" url="/home" is_selected={false} />
 				<Menu title="Settings" url="/home" is_selected={false} />
-			</Stack>
-		</Box>
+			</div>
+		</div>
 	);
 }
 

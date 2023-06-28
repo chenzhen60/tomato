@@ -3,7 +3,7 @@ use r2d2_sqlite::SqliteConnectionManager;
 use tauri_plugin_log::LogTarget;
 
 use crate::{
-    api::{blogs, clipboards, greet, save_blog, save_clipboard},
+    api::{blogs, clipboards, greet, save_blog, save_clipboard, clipboards_with_search},
     utils::db_util::DBUtil,
 };
 
@@ -43,7 +43,8 @@ fn main() {
             blogs,
             save_blog,
             save_clipboard,
-            clipboards
+            clipboards,  
+            clipboards_with_search,
         ])
         .system_tray(system_tray)
         .on_system_tray_event(|app, event| match event {

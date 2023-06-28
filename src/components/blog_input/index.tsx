@@ -1,4 +1,3 @@
-import { Box, Button, Stack, TextField } from "@mui/material";
 import { invoke } from "@tauri-apps/api";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
@@ -20,18 +19,10 @@ export default function BlogInput() {
     };
 
     return (
-        <Box
-            sx={{
-                backgroundColor: "white",
-                padding: "20px 20px",
-                borderRadius: "10px",
-                margin: "10px 0px",
-                boxShadow: 2,
-            }}
-        >
-            <TextField
-                variant="standard"
-                multiline
+        <div>
+            <input
+				type={'text'}
+                multiline: true
                 maxRows={5}
                 rows={2}
                 value={text}
@@ -43,23 +34,15 @@ export default function BlogInput() {
                     border: "none",
                 }}
             />
-            <Stack
-                direction={"row"}
-                justifyContent={"space-between"}
-                sx={{
-                    marginTop: "10px",
-                }}
-            >
-                <Box></Box>
-                <Button
-                    variant="contained"
+            <div className="flex flex-row justify-between">
+                <button
                     disabled={text === "" || text === null}
                     color="success"
                     onClick={save_blog}
                 >
                     Save
-                </Button>
-            </Stack>
-        </Box>
+                </button>
+            </div>
+        </div>
     );
 }

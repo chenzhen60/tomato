@@ -71,4 +71,24 @@ impl Clipboard {
         })?;
         Ok(rows.map(|row| row.unwrap()).collect())
     }
+
+    pub fn list_with_search(s: &str) -> Result<Vec<Clipboard>> {
+        let conn = DBUtil::get_conn().unwrap();
+        let mut stmt = conn.prepare(
+            "
+             select id, text, created_at
+             from clipboards
+             where text like ?
+             order by created_at desc
+            ",
+        )?;
+        let rows = stmt.query_map([format!("%{}%", s)], |row| {
+            Ok(Self {
+                id: row.get(0)?,
+                text: row.get(1)?,
+                created_at: row.get(2)?,
+            })
+        })?;
+        Ok(rows.map(|row| row.unwrap()).collect())
+    }
 }

@@ -59,10 +59,10 @@ function App() {
 
 	return (
 		<div className="flex flex-row h-screen overflow-hidden">
-			<div className="w-3/12 h-screen">
+			<div className="w-3/12 max-w-lg h-screen">
 				<LeftMenus />
 			</div>
-			<div className="w-9/12 h-screen overflow-auto">
+			<div className="w-max h-screen overflow-auto">
 				<Outlet />
 			</div>
 		</div>

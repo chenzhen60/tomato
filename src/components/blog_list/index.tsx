@@ -1,4 +1,3 @@
-import { List } from "@mui/material";
 import { invoke } from "@tauri-apps/api";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
@@ -28,12 +27,11 @@ export default function BlogList() {
     }, [refresh_blogs]);
 
     return (
-        <List>
-            {
+        <div className="flex flex-col"> {
                 blogs.map((item) => (
                     <Blog key={item.id} blog={item} />
                 ))
             }
-        </List>
+        </div>
     );
 }

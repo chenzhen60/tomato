@@ -49,8 +49,19 @@ pub fn clipboards() -> Vec<Clipboard> {
     match Clipboard::list_all() {
         Ok(list) => list,
         Err(err) => {
-            panic!("#{:?}", err)
+            panic!("{:?}", err)
         }
     }
 }
+
+#[tauri::command]
+pub fn clipboards_with_search(s: &str) -> Vec<Clipboard> {
+    match Clipboard::list_with_search(s) {
+       Ok(list) => list,
+       Err(err) => {
+           panic!("{:?}", err)
+       }
+    }
+}
+
 

@@ -1,13 +1,12 @@
-import { Container, Typography } from "@mui/material";
 
 function DailyReview() {
 
     return (
-        <Container>
-            <Typography variant="h1">
+        <div>
+            <p>
                 Daily Review
-            </Typography>
-        </Container>
+            </p>
+        </div>
     )
 
 }
